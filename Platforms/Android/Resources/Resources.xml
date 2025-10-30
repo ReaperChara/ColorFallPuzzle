@@ -1,1 +1,5 @@
-
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MAUI splash için, drawable/splash.png referansı -->
+    <drawable name="splash" src="splash" />
+</resources>
