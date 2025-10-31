@@ -1,6 +1,7 @@
 using ColorFallPuzzle.Models;
 using SkiaSharp;
 using System.Diagnostics;
+using System.Linq;  // EKLE: Max/Min için
 
 namespace ColorFallPuzzle.Services;
 
@@ -91,7 +92,11 @@ public class GameManager
 
     private bool CanMove(int dx, int dy, Piece? piece = null)
     {
-        piece ??= CurrentPiece!;
+        if (piece == null)
+        {
+            piece = CurrentPiece!;
+        }
+
         foreach (var block in piece.Blocks)
         {
             int nx = block.X + CurrentX + dx;
@@ -135,4 +140,10 @@ public class GameManager
         }
     }
 
-    private void Reset
+    private void ResetGame()
+    {
+        Grid.Clear();
+        Score = 0;
+        SpawnNewPiece();
+    }
+}
