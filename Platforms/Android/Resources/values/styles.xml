@@ -6,7 +6,6 @@
     </style>
 
     <style name="MainTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Özelleştirme için buraya ekle -->
         <item name="colorPrimary">#512BD4</item>
         <item name="colorPrimaryVariant">#3700B3</item>
         <item name="colorOnPrimary">#FFFFFF</item>
