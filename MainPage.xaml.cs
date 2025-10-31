@@ -1,3 +1,5 @@
+using Microsoft.Maui.Dispatching;  // EKLE: Dispatcher için
+using SkiaSharp;  // EKLE: SKColors için
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
 using ColorFallPuzzle.Services;
@@ -14,8 +16,8 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         _gameManager = new GameManager();
 
-        // 60 FPS update
-        Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
+        // Dispatcher ile timer (obsolete fix)
+        Dispatcher.StartTimer(TimeSpan.FromMilliseconds(16), () =>
         {
             _gameManager.Update();
             GameCanvas.InvalidateSurface();
@@ -28,7 +30,7 @@ public partial class MainPage : ContentPage
         GameCanvas.GestureRecognizers.Add(tap);
     }
 
-    private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+    private void OnCanvasPaint(object sender, SKPaintSurfaceEventArgs e)  // XAML ile eşleşsin
     {
         _canvasWidth = e.Info.Width;
         _canvasHeight = e.Info.Height;
@@ -40,7 +42,7 @@ public partial class MainPage : ContentPage
         ScoreLabel.Text = $"Score: {_gameManager.Score}";
     }
 
-    private void OnTapped(object sender, TappedEventArgs e)
+    private void OnTapped(object? sender, TappedEventArgs e)  // Nullable sender (warning fix)
     {
         var pos = e.GetPosition(GameCanvas);
         if (!pos.HasValue) return;
