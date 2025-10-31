@@ -8,11 +8,12 @@
     <VerticalStackLayout Spacing="10" Padding="20">
         <Label x:Name="ScoreLabel" Text="Score: 0" FontSize="24" HorizontalOptions="Center" />
 
-        <skia:SKCanvasView x:Name="GameCanvas" PaintSurface="OnCanvasPaint" 
+        <skia:SKCanvasView x:Name="GameCanvas" 
+                           PaintSurface="OnCanvasPaint"
                            HeightRequest="600" WidthRequest="300" 
                            HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
 
-        <admob:BannerView AdsId="ca-app-pub-3940256099942544/6300978111" />  <!-- Test Banner ID -->
+        <admob:BannerView AdsId="ca-app-pub-3940256099942544/6300978111" />
     </VerticalStackLayout>
 
 </ContentPage>
