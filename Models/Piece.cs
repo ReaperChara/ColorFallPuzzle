@@ -5,8 +5,8 @@ namespace ColorFallPuzzle.Models;
 public class Piece
 {
     public List<Block> Blocks { get; private set; } = new();
-    public int PivotX { get; private set; }  // Dönme merkezi X
-    public int PivotY { get; private set; }  // Dönme merkezi Y
+    public int PivotX { get; private set; }
+    public int PivotY { get; private set; }
 
     private static readonly SKColor[] Colors = new[]
     {
@@ -102,7 +102,6 @@ public class Piece
         var shape = Pentominoes[index];
         Blocks.Clear();
 
-        int offsetX = 0, offsetY = 0;
         int minX = int.MaxValue, minY = int.MaxValue;
 
         // Şekli bloklara çevir
@@ -127,15 +126,12 @@ public class Piece
             b.Y -= minY;
         }
 
-        // Pivot (merkez) belirle
-        PivotX = Blocks.Average(b => b.X) switch
-        {
-            var avg => (int)Math.Round(avg)
-        };
-        PivotY = Blocks.Average(b => b.Y) switch
-        {
-            var avg => (int)Math.Round(avg)
-        };
+        // Pivot (merkez) belirle – basit Round ile
+        double avgX = Blocks.Average(b => b.X);
+        PivotX = (int)Math.Round(avgX);
+
+        double avgY = Blocks.Average(b => b.Y);
+        PivotY = (int)Math.Round(avgY);
     }
 
     // Parçayı döndür (90 derece saat yönünde)
