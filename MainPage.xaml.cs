@@ -6,15 +6,15 @@ namespace ColorFallPuzzle;
 
 public partial class MainPage : ContentPage
 {
-    private Services.GameManager _gameManager;
+    private GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
 
     public MainPage()
     {
         InitializeComponent();
-        _gameManager = new Services.GameManager();
+        _gameManager = new GameManager();
 
-        // Timer: 60 FPS update
+        // 60 FPS update
         Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
         {
             _gameManager.Update();
@@ -22,42 +22,42 @@ public partial class MainPage : ContentPage
             return true;
         });
 
-        // Dokunma kontrolleri
-        var tapGesture = new TapGestureRecognizer();
-        tapGesture.Tapped += OnCanvasTapped;
-        GameCanvas.GestureRecognizers.Add(tapGesture);
+        // Dokunma
+        var tap = new TapGestureRecognizer();
+        tap.Tapped += OnTapped;
+        GameCanvas.GestureRecognizers.Add(tap);
     }
 
-    private void OnCanvasPaint(object sender, SKPaintSurfaceEventArgs e)
+    private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         _canvasWidth = e.Info.Width;
         _canvasHeight = e.Info.Height;
 
-        SKCanvas canvas = e.Surface.Canvas;
+        var canvas = e.Surface.Canvas;
         canvas.Clear(SKColors.Black);
-
         _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
 
         ScoreLabel.Text = $"Score: {_gameManager.Score}";
     }
 
-    private void OnCanvasTapped(object sender, TappedEventArgs e)
+    private void OnTapped(object sender, TappedEventArgs e)
     {
         var pos = e.GetPosition(GameCanvas);
-        if (pos == null) return;
+        if (!pos.HasValue) return;
 
         double x = pos.Value.X;
-        double third = _canvasWidth / 3;
+        double y = pos.Value.Y;
+        double thirdX = _canvasWidth / 3;
+        double topY = _canvasHeight * 0.3;
 
-        if (x < third)
+        if (x < thirdX)
             _gameManager.MoveLeft();
-        else if (x < 2 * third)
+        else if (x < 2 * thirdX)
             _gameManager.DropFast();
         else
             _gameManager.MoveRight();
 
-        // Yukarı dokunma = döndür (Y koordinatı küçükse)
-        if (pos.Value.Y < _canvasHeight * 0.3)
+        if (y < topY)
             _gameManager.Rotate();
 
         GameCanvas.InvalidateSurface();
