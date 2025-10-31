@@ -1,6 +1,6 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
-using Plugin.MauiMTAdmob;
+using Plugin.MauiMTAdmob;  // EKLE: CrossMTAdmob için
 
 namespace ColorFallPuzzle;
 
