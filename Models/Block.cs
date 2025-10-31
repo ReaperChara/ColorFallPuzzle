@@ -1,3 +1,5 @@
+using SkiaSharp;  // EKLE: SKColor için
+
 namespace ColorFallPuzzle.Models;
 
 public class Block
