@@ -1,6 +1,5 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
-using Plugin.MauiMTAdmob;
 
 namespace ColorFallPuzzle;
 
@@ -16,9 +15,6 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
-
-        // Plugin init (DI registration)
-        builder.Services.AddSingleton<IAdmobService, AdmobService>();
 
         return builder.Build();
     }
