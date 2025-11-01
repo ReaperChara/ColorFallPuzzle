@@ -2,10 +2,8 @@ namespace ColorFallPuzzle;
 
 public partial class App : Application
 {
-    public App()
+    protected override Window CreateWindow(IActivationState? activationState)
     {
-        InitializeComponent();
-
-        MainPage = new AppShell();
+        return new Window(new AppShell());
     }
 }
