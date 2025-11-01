@@ -1,5 +1,6 @@
 using Android.App;
 using Android.OS;
+using Android.Content.PM;  // EKLE: ConfigChanges için
 using Plugin.MauiMTAdmob;
 
 namespace ColorFallPuzzle;
