@@ -2,18 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
-             xmlns:admob="clr-namespace:Plugin.MauiMTAdmob;assembly=Plugin.MauiMTAdmob"
+             xmlns:controls="clr-namespace:Plugin.MauiMTAdmob.Controls;assembly=Plugin.MauiMTAdmob"
              x:Class="ColorFallPuzzle.MainPage">
 
     <VerticalStackLayout Spacing="10" Padding="20">
         <Label x:Name="ScoreLabel" Text="Score: 0" FontSize="24" HorizontalOptions="Center" />
 
-        <skia:SKCanvasView x:Name="GameCanvas" 
-                           PaintSurface="OnCanvasPaint"
+        <skia:SKCanvasView x:Name="GameCanvas" PaintSurface="OnCanvasPaint" 
                            HeightRequest="600" WidthRequest="300" 
                            HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
 
-        <admob:BannerView AdsId="ca-app-pub-3940256099942544/6300978111" />
+        <controls:MTAdView AdsId="ca-app-pub-3940256099942544/6300978111" />  <!-- BannerView yerine MTAdView -->
     </VerticalStackLayout>
 
 </ContentPage>
