@@ -12,8 +12,8 @@
                            HeightRequest="600" WidthRequest="300" 
                            HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
 
-        <ad:BannerAd AdUnitId="ca-app-pub-3940256099942544/6300978111" 
-                     HeightRequest="50" WidthRequest="320" 
+        <ad:BannerAd AdUnitId="ca-app-pub-3940256099942544/6300978111"
+                     WidthRequest="320" HeightRequest="50"
                      HorizontalOptions="Center" VerticalOptions="End" />
     </VerticalStackLayout>
 
