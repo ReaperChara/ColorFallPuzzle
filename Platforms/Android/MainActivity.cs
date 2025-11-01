@@ -1,16 +1,16 @@
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
-using Android.Content.PM;  // EKLE: ConfigChanges için
-using Plugin.MauiMTAdmob;
+using MauiMtAdmob;
 
 namespace ColorFallPuzzle;
 
 [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
-    protected override void OnResume()
+    protected override void OnCreate(Bundle savedInstanceState)
     {
-        base.OnResume();
-        CrossMauiMTAdmob.Current.OnResume();
+        base.OnCreate(savedInstanceState);
+        MauiMtAdmobInitializer.Init(this);
     }
 }
