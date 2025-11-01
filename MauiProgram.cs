@@ -17,7 +17,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        CrossMTAdmob.Current.Init();
+        // AdMob init (test app ID ile)
+        CrossMauiMTAdmob.Current.Init(appId: "ca-app-pub-3940256099942544~3347511713");
 
         return builder.Build();
     }
