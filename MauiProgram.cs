@@ -1,6 +1,6 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
-using Plugin.MauiMTAdmob;
+using Plugin.MauiMtAdmob;  // Düzelt: lowercase 'm' in Mt
 
 namespace ColorFallPuzzle;
 
@@ -11,7 +11,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseMauiMTAdmob()
+            .UseMauiMTAdmob()  // Düzelt: Extension method
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
