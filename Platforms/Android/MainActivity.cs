@@ -1,6 +1,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Plugin.MauiMTAdmob;
 
 namespace ColorFallPuzzle;
 
@@ -10,6 +11,8 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-        // Plugin otomatik init olur, ekstra kod gerekmez
+
+        // Plugin init (test app ID)
+        AdmobService.Instance.Initialize(this, "ca-app-pub-3940256099942544~3347511713");
     }
 }
