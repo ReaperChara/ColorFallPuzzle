@@ -17,9 +17,7 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
         <PackageReference Include="SkiaSharp" Version="2.88.9" />
         <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
-        <PackageReference Include="Plugin.MauiMTAdmob" Version="2.0.1.1" />
-        <PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.5.0.3" />
-        <PackageReference Include="Xamarin.AndroidX.Collection.Jvm" Version="1.5.0.3" />
+        <PackageReference Include="Plugin.MauiMTAdmob" Version="2.1.0" />
     </ItemGroup>
 
     <ItemGroup>
