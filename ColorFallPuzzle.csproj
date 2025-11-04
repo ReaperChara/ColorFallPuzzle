@@ -20,16 +20,17 @@
     <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
   </ItemGroup>
 
-  <!-- AdMob eklentisi (net9.0 için uyumlu olan) -->
+  <!-- AdMob eklentisi -->
   <ItemGroup>
     <PackageReference Include="Soenneker.Maui.Admob" Version="3.0.92" />
   </ItemGroup>
 
-  <!-- AndroidX bileşenleri (otomatik çözüm için sadece temel olanlar) -->
+  <!-- AndroidX Core (Soenneker.Maui.Admob'un istediği en yüksek versiyon) -->
   <ItemGroup>
-    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.13.1.1" />
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.17.0" />
   </ItemGroup>
 
+  <!-- XAML derleme ayarları -->
   <ItemGroup>
     <MauiXaml Update="AppShell.xaml">
       <Generator>MSBuild:Compile</Generator>
