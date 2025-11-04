@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <!-- Use environment SDK path if set, otherwise default to $HOME/Android/Sdk -->
+    <AndroidSdkDirectory Condition="'$(AndroidSdkDirectory)' == '' and '$(ANDROID_SDK_ROOT)' != ''">$(ANDROID_SDK_ROOT)</AndroidSdkDirectory>
+    <AndroidSdkDirectory Condition="'$(AndroidSdkDirectory)' == '' and '$(HOME)' != ''">$(HOME)/Android/Sdk</AndroidSdkDirectory>
+    <AndroidNdkDirectory Condition="'$(AndroidNdkDirectory)' == '' and '$(ANDROID_NDK_HOME)' != ''">$(ANDROID_NDK_HOME)</AndroidNdkDirectory>
+    <JavaSdkDirectory Condition="'$(JavaSdkDirectory)' == '' and '$(JAVA_HOME)' != ''">$(JAVA_HOME)</JavaSdkDirectory>
+    <JavaSdkDirectory Condition="'$(JavaSdkDirectory)' == '' and '$(HOME)' != ''">$(HOME)/jdk-21</JavaSdkDirectory>
+  </PropertyGroup>
+</Project>
