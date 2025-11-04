@@ -1,6 +1,6 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
-using Soenneker.Maui.Admob; // 🔹 AdMob paketi
+using Soenneker.Maui.Admob;  // Soenneker using
 
 namespace ColorFallPuzzle;
 
@@ -11,7 +11,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseAdMob() // 🔹 Soenneker paketi için doğru init
+            .UseMauiAdmob()  // Soenneker init
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
