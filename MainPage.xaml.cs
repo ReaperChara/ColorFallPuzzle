@@ -1,7 +1,7 @@
-using Microsoft.Maui.Dispatching;
-using SkiaSharp;
-using SkiaSharp.Views.Maui;
+using Microsoft.Maui.Controls;
+using Plugin.MauiMTAdmob;  // eklendi
 using SkiaSharp.Views.Maui.Controls;
+using SkiaSharp.Views.Maui;
 using ColorFallPuzzle.Services;
 
 namespace ColorFallPuzzle;
@@ -16,7 +16,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         _gameManager = new GameManager();
 
-        // Timer: Dispatcher ile (Device obsolete)
         Dispatcher.StartTimer(TimeSpan.FromMilliseconds(16), () =>
         {
             _gameManager.Update();
@@ -24,26 +23,31 @@ public partial class MainPage : ContentPage
             return true;
         });
 
-        // Dokunma
         var tap = new TapGestureRecognizer();
         tap.Tapped += OnTapped;
         GameCanvas.GestureRecognizers.Add(tap);
     }
 
-    // PaintSurface event adı XAML ile aynı: OnCanvasPaint
-    private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
+    protected override void OnAppearing()
     {
-        _canvasWidth = e.Info.Width;
-        _canvasHeight = e.Info.Height;
+        base.OnAppearing();
 
-        var canvas = e.Surface.Canvas;
-        canvas.Clear(SKColors.Black);  // SkiaSharp using ile çalışıyor
-        _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
+        // Banner reklamı programatik ekliyoruz
+        var banner = new MauiMTAdmobView
+        {
+            AdUnitId = "ca-app-pub-3940256099942544/6300978111", // test reklam ID’si
+            AdSize = AdSizeType.Banner
+        };
 
-        ScoreLabel.Text = $"Score: {_gameManager.Score}";
+        // sayfada Grid içinde altta tanımlı satıra ekleme
+        if (this.Content is Layout layout)
+        {
+            layout.Children.Add(banner);
+        }
+
+        banner.LoadAd();
     }
 
-    // Tapped event: sender nullable (warning fix)
     private void OnTapped(object? sender, TappedEventArgs e)
     {
         var pos = e.GetPosition(GameCanvas);
@@ -65,5 +69,17 @@ public partial class MainPage : ContentPage
             _gameManager.Rotate();
 
         GameCanvas.InvalidateSurface();
+    }
+
+    private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
+    {
+        _canvasWidth = e.Info.Width;
+        _canvasHeight = e.Info.Height;
+
+        var canvas = e.Surface.Canvas;
+        canvas.Clear(SKColors.Black);
+        _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
+
+        ScoreLabel.Text = $"Score: {_gameManager.Score}";
     }
 }
