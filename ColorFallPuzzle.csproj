@@ -1,39 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0-android</TargetFramework>
-        <SupportedOSPlatformVersion>34</SupportedOSPlatformVersion>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <ApplicationId>com.colorfallpuzzle.app</ApplicationId>
-        <ApplicationVersion>1</ApplicationVersion>
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <RootNamespace>ColorFallPuzzle</RootNamespace>
-        <UseMaui>true</UseMaui>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>34</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.colorfallpuzzle.app</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <RootNamespace>ColorFallPuzzle</RootNamespace>
+    <UseMaui>true</UseMaui>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
-        <PackageReference Include="SkiaSharp" Version="2.88.9" />
-        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
-        <PackageReference Include="Plugin.MauiMTAdmob" Version="2.1.0" />
-        <!-- Xamarin constraint override -->
-        <PackageReference Include="Xamarin.AndroidX.Collection.Jvm" Version="1.5.0.3" />
-        <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime" Version="2.9.2.1" />
-        <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel" Version="2.9.2.1" />
-        <PackageReference Include="Xamarin.AndroidX.SavedState" Version="1.3.1.1" />
-        <PackageReference Include="Xamarin.AndroidX.Fragment" Version="1.8.8.1" />
-        <PackageReference Include="Xamarin.AndroidX.Activity" Version="1.10.1.3" />
-    </ItemGroup>
+  <!-- MAUI ve grafik altyapısı -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
+    <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <MauiXaml Update="AppShell.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="MainPage.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-    </ItemGroup>
+  <!-- AdMob eklentisi (net9.0 için uyumlu olan) -->
+  <ItemGroup>
+    <PackageReference Include="Soenneker.Maui.Admob" Version="3.0.92" />
+  </ItemGroup>
+
+  <!-- AndroidX bileşenleri (otomatik çözüm için sadece temel olanlar) -->
+  <ItemGroup>
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.13.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="AppShell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+  </ItemGroup>
 
 </Project>
