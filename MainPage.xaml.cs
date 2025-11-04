@@ -1,8 +1,8 @@
 using Microsoft.Maui.Controls;
-using Plugin.MauiMTAdmob;  // eklendi
 using SkiaSharp.Views.Maui.Controls;
 using SkiaSharp.Views.Maui;
 using ColorFallPuzzle.Services;
+using Soenneker.Maui.Admob; // 🔹 Yeni paket
 
 namespace ColorFallPuzzle;
 
@@ -33,13 +33,13 @@ public partial class MainPage : ContentPage
         base.OnAppearing();
 
         // Banner reklamı programatik ekliyoruz
-        var banner = new MauiMTAdmobView
+        var banner = new AdBannerView
         {
             AdUnitId = "ca-app-pub-3940256099942544/6300978111", // test reklam ID’si
-            AdSize = AdSizeType.Banner
+            Size = AdBannerSize.Banner
         };
 
-        // sayfada Grid içinde altta tanımlı satıra ekleme
+        // Sayfada Grid veya StackLayout varsa altta ekleyelim
         if (this.Content is Layout layout)
         {
             layout.Children.Add(banner);
@@ -77,7 +77,7 @@ public partial class MainPage : ContentPage
         _canvasHeight = e.Info.Height;
 
         var canvas = e.Surface.Canvas;
-        canvas.Clear(SKColors.Black);
+        canvas.Clear(SkiaSharp.SKColors.Black);
         _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
 
         ScoreLabel.Text = $"Score: {_gameManager.Score}";
