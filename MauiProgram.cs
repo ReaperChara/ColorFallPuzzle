@@ -1,6 +1,5 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
-using Soenneker.Maui.Admob;
 
 namespace ColorFallPuzzle;
 
@@ -11,7 +10,6 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseAdmob()  // Düzelt: UseAdmob()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
