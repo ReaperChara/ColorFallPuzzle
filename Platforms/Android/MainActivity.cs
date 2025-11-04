@@ -11,6 +11,6 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-        CrossMauiMTAdmob.Current.Init(this);  // TEST: Otomatik test app ID kullanır
+        MauiMTAdmob.Init(this);  // TEST: Otomatik test app ID kullanır
     }
 }
