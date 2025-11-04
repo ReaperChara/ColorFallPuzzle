@@ -1,8 +1,8 @@
-using Microsoft.Maui.Controls;
-using SkiaSharp.Views.Maui.Controls;
+using Microsoft.Maui.Dispatching;
+using SkiaSharp;
 using SkiaSharp.Views.Maui;
+using SkiaSharp.Views.Maui.Controls;
 using ColorFallPuzzle.Services;
-using Soenneker.Maui.Admob; // 🔹 Yeni paket
 
 namespace ColorFallPuzzle;
 
@@ -28,24 +28,16 @@ public partial class MainPage : ContentPage
         GameCanvas.GestureRecognizers.Add(tap);
     }
 
-    protected override void OnAppearing()
+    private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
     {
-        base.OnAppearing();
+        _canvasWidth = e.Info.Width;
+        _canvasHeight = e.Info.Height;
 
-        // Banner reklamı programatik ekliyoruz
-        var banner = new AdBannerView
-        {
-            AdUnitId = "ca-app-pub-3940256099942544/6300978111", // test reklam ID’si
-            Size = AdBannerSize.Banner
-        };
+        var canvas = e.Surface.Canvas;
+        canvas.Clear(SKColors.Black);
+        _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
 
-        // Sayfada Grid veya StackLayout varsa altta ekleyelim
-        if (this.Content is Layout layout)
-        {
-            layout.Children.Add(banner);
-        }
-
-        banner.LoadAd();
+        ScoreLabel.Text = $"Score: {_gameManager.Score}";
     }
 
     private void OnTapped(object? sender, TappedEventArgs e)
@@ -69,17 +61,5 @@ public partial class MainPage : ContentPage
             _gameManager.Rotate();
 
         GameCanvas.InvalidateSurface();
-    }
-
-    private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
-    {
-        _canvasWidth = e.Info.Width;
-        _canvasHeight = e.Info.Height;
-
-        var canvas = e.Surface.Canvas;
-        canvas.Clear(SkiaSharp.SKColors.Black);
-        _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
-
-        ScoreLabel.Text = $"Score: {_gameManager.Score}";
     }
 }
