@@ -6,16 +6,16 @@
                  android:icon="@mipmap/ic_launcher"
                  android:roundIcon="@mipmap/ic_launcher_round"
                  android:supportsRtl="true"
-                 android:theme="@style/Maui.SplashTheme">
+                 android:label="ColorFallPuzzle">
 
-        <!-- TEST APP ID (gerçek ID ile değiştirince para kazanırsın) -->
         <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
                    android:value="ca-app-pub-3940256099942544~3347511713" />
-        <!-- Test reklam birimi kullanıyorsun; canlı reklama geçmek için bu değeri kendi App ID ile değiştir. -->
 
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="34" />
 
 </manifest>

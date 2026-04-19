@@ -13,7 +13,8 @@
     <UseMaui>true</UseMaui>
 
     <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <RuntimeIdentifier>android-arm</RuntimeIdentifier> 
+    
+    <RuntimeIdentifiers>android-arm;android-arm64</RuntimeIdentifiers> 
     
     <NoWarn>$(NoWarn);NU1608</NoWarn>
     <PublishTrimmed>false</PublishTrimmed>
@@ -22,6 +23,11 @@
     <AndroidUseAssemblyStore>false</AndroidUseAssemblyStore>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Platforms\Android\Resources\drawable\ic_launcher.png" Color="#FFFFFF" />
+    
+    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
