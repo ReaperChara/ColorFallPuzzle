@@ -2,6 +2,8 @@ using Microsoft.Maui.Dispatching;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
+using Soenneker.Maui.Admob;
+using Soenneker.Maui.Admob.Enums;
 using ColorFallPuzzle.Services;
 
 namespace ColorFallPuzzle;
@@ -26,6 +28,22 @@ public partial class MainPage : ContentPage
         var tap = new TapGestureRecognizer();
         tap.Tapped += OnTapped;
         GameCanvas.GestureRecognizers.Add(tap);
+
+        InitializeBannerAd();
+    }
+
+    private void InitializeBannerAd()
+    {
+#if ANDROID
+        var banner = new BannerAd
+        {
+            Size = AdmobAdSize.Banner,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.End
+        };
+
+        BannerHost.Children.Add(banner);
+#endif
     }
 
     private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)

@@ -5,13 +5,25 @@
              x:Class="ColorFallPuzzle.MainPage">
 
     <Grid Padding="20" RowDefinitions="Auto,*,Auto" ColumnDefinitions="*">
-        <Label x:Name="ScoreLabel" Text="Score: 0" FontSize="24" HorizontalOptions="Center" Grid.Row="0" />
+        <Label x:Name="ScoreLabel"
+               Text="Score: 0"
+               FontSize="24"
+               HorizontalOptions="Center"
+               Grid.Row="0" />
 
-        <skia:SKCanvasView x:Name="GameCanvas" PaintSurface="OnCanvasPaint"
-                           HorizontalOptions="Fill" VerticalOptions="FillAndExpand"
+        <skia:SKCanvasView x:Name="GameCanvas"
+                           PaintSurface="OnCanvasPaint"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="FillAndExpand"
                            Grid.Row="1" />
 
-        <Label Text="AdMob Banner (Test Ad)" FontSize="12" HorizontalOptions="Center" Grid.Row="2" Padding="10" BackgroundColor="LightGray" />
+        <!-- Android için kod tarafında BannerAd ekleniyor -->
+        <Grid x:Name="BannerHost"
+              HeightRequest="50"
+              MinimumHeightRequest="50"
+              HorizontalOptions="Fill"
+              VerticalOptions="End"
+              Grid.Row="2" />
     </Grid>
 
 </ContentPage>
