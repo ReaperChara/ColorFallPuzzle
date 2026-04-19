@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-android35.0</TargetFramework>
-    <SupportedOSPlatformVersion>35</SupportedOSPlatformVersion>
+    <TargetFramework>net9.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationId>com.colorfallpuzzle.app</ApplicationId>
@@ -10,57 +11,31 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <RootNamespace>ColorFallPuzzle</RootNamespace>
     <UseMaui>true</UseMaui>
-    <AndroidSdkDirectory>$(HOME)/Android/Sdk</AndroidSdkDirectory>
-    <JavaSdkDirectory>$(HOME)/jdk-21</JavaSdkDirectory>
+
     <AndroidPackageFormat>apk</AndroidPackageFormat>
-    <RuntimeIdentifiers>android-arm64;android-arm;android-x86;android-x64</RuntimeIdentifiers>
-    <EnableAssemblyCompression>true</EnableAssemblyCompression>
-    <AndroidEnableAssemblyCompression>true</AndroidEnableAssemblyCompression>
-    <AndroidUseAssemblyStore>true</AndroidUseAssemblyStore>
+    <RuntimeIdentifier>android-arm</RuntimeIdentifier> 
+    
+    <NoWarn>$(NoWarn);NU1608</NoWarn>
+    <PublishTrimmed>false</PublishTrimmed>
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <AndroidEnableAssemblyCompression>false</AndroidEnableAssemblyCompression>
+    <AndroidUseAssemblyStore>false</AndroidUseAssemblyStore>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
 
-  <!-- MAUI ve grafik altyapısı -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
     <PackageReference Include="SkiaSharp" Version="2.88.9" />
     <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.9" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel.Ktx" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.SavedState.SavedState.Ktx" Version="1.3.1.1" />
-  </ItemGroup>
-
-  <!-- AdMob eklentisi -->
-  <ItemGroup>
     <PackageReference Include="Soenneker.Maui.Admob" Version="3.0.92" />
   </ItemGroup>
 
-  <!-- AndroidX Core (Soenneker.Maui.Admob'un istediği en yüksek versiyon) -->
-  <ItemGroup>
-    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.17.0" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Concurrent.Futures" Version="1.3.0.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Tracing.Tracing" Version="1.3.0.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Concurrent.Futures.Ktx" Version="1.3.0.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Service" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Tracing.Tracing.Ktx" Version="1.3.0.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx.Android" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Process" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core.Ktx" Version="2.9.2.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModelSavedState" Version="2.9.2.1" />
-  </ItemGroup>
-
-  <!-- XAML derleme ayarları -->
-  <ItemGroup>
-    <MauiXaml Update="AppShell.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-  </ItemGroup>
+  <Target Name="RemoveConflictingTracing" BeforeTargets="_DisplayTargets;BeforeBuild">
+    <ItemGroup>
+      <AndroidExternalJavaLibrary Remove="androidx.tracing.tracing-ktx" />
+      <AndroidLibrary Remove="androidx.tracing.tracing-ktx" />
+    </ItemGroup>
+  </Target>
 
 </Project>
