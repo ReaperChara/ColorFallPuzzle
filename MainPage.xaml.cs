@@ -14,25 +14,25 @@ public partial class MainPage : ContentPage
     private GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
     private bool _isTimerRunning = false;
+    private bool _adInitialized = false;
 
     public MainPage()
     {
         InitializeComponent();
-        
-        // GameManager'ı oluştur
+
         _gameManager = new GameManager();
 
-        // Sayfa tamamen yüklendiğinde reklamı ve oyun döngüsünü başlat
-        this.Loaded += (s, e) => 
-        {
-            InitializeBannerAd();
-            StartGameLoop();
-        };
+        this.Loaded += OnPageLoaded;
 
-        // Tıklama olayını bağla
         var tap = new TapGestureRecognizer();
         tap.Tapped += OnTapped;
         GameCanvas.GestureRecognizers.Add(tap);
+    }
+
+    private void OnPageLoaded(object? sender, EventArgs e)
+    {
+        InitializeBannerAd();
+        StartGameLoop();
     }
 
     private void StartGameLoop()
@@ -40,30 +40,30 @@ public partial class MainPage : ContentPage
         if (_isTimerRunning) return;
         _isTimerRunning = true;
 
-        Dispatcher.StartTimer(TimeSpan.FromMilliseconds(16), () =>
+        Dispatcher.StartTimer(TimeSpan.FromMilliseconds(33), () =>
         {
-            try 
+            try
             {
                 _gameManager.Update();
-                
-                // UI güncellemelerini ana iş parçacığında güvenli yap
-                MainThread.BeginInvokeOnMainThread(() => {
-                    GameCanvas.InvalidateSurface();
-                });
-                
+
+                // Direkt UI thread flood yok
+                GameCanvas.InvalidateSurface();
+
                 return true;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Oyun Döngüsü Hatası: {ex.Message}");
-                return false; 
+                Debug.WriteLine($"Game Loop Error: {ex}");
+                return false;
             }
         });
     }
 
     private void InitializeBannerAd()
     {
-        try 
+        if (_adInitialized) return;
+
+        try
         {
 #if ANDROID
             var banner = new BannerAd
@@ -76,54 +76,53 @@ public partial class MainPage : ContentPage
             if (BannerHost != null)
             {
                 BannerHost.Children.Add(banner);
+                _adInitialized = true;
             }
 #endif
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"AdMob Yükleme Hatası: {ex.Message}");
+            Debug.WriteLine($"AdMob Init Error: {ex}");
         }
     }
 
     private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
     {
-        try 
+        try
         {
-            _canvasWidth = e.Info.Width;
-            _canvasHeight = e.Info.Height;
-
             var canvas = e.Surface.Canvas;
             canvas.Clear(SKColors.Black);
 
-            // Eğer genişlik/yükseklik henüz hesaplanmadıysa çizim yapma (Çökmeyi engeller)
-            if (_canvasWidth <= 0 || _canvasHeight <= 0) return;
+            _canvasWidth = e.Info.Width;
+            _canvasHeight = e.Info.Height;
+
+            if (_canvasWidth <= 0 || _canvasHeight <= 0)
+                return;
 
             _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
 
-            // Skoru güvenli bir şekilde güncelle
-            MainThread.BeginInvokeOnMainThread(() => {
-                ScoreLabel.Text = $"Score: {_gameManager.Score}";
-            });
+            // UI thread spam yok (kritik fix)
+            ScoreLabel.Text = $"Score: {_gameManager.Score}";
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Çizim Hatası: {ex.Message}");
+            Debug.WriteLine($"Render Error: {ex}");
         }
     }
 
     private void OnTapped(object? sender, TappedEventArgs e)
     {
-        try 
+        try
         {
             var pos = e.GetPosition(GameCanvas);
             if (!pos.HasValue) return;
 
             double x = pos.Value.X;
             double y = pos.Value.Y;
+
             double thirdX = _canvasWidth / 3;
             double topY = _canvasHeight * 0.3;
 
-            // Kontroller
             if (x < thirdX)
                 _gameManager.MoveLeft();
             else if (x < 2 * thirdX)
@@ -138,7 +137,7 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Dokunma Hatası: {ex.Message}");
+            Debug.WriteLine($"Touch Error: {ex}");
         }
     }
 }
