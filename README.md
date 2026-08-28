@@ -18,7 +18,7 @@ Uygulama içinde banner reklam birimi kimliği doğrudan koddan test ID ile atan
 - `dotnet build` compiles the project but does not create a distributable APK.
 - The project is now targeted at `.NET 9` for Android.
 - To build a release APK locally, run:
-  - `dotnet publish -f net9.0-android35.0 -c Release /p:AndroidPackageFormat=apk`
+  - `dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk`
 
 ## Restore and recovery
 Use the provided helper script from the repo root to install JDK 21, Android SDK command-line tools, and build the APK:
@@ -67,12 +67,12 @@ dotnet workload install maui-android
 dotnet workload restore
 dotnet restore
 
-dotnet build -f net9.0-android35.0 -c Release
+dotnet build -f net9.0-android -c Release
 
-dotnet publish -f net9.0-android35.0 -c Release /p:AndroidPackageFormat=apk
+dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk
 ```
 
-If the build succeeds, the APK will be created under `bin/Release/net9.0-android35.0/android-arm64/publish` or similar.
+If the build succeeds, the APK will be created under `bin/Release/net9.0-android/publish` or similar.
 
 1. Push changes.
 2. Go to Actions tab, download APK from artifacts.

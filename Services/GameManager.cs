@@ -12,7 +12,7 @@ public class GameManager
     public int CurrentY { get; private set; }
     public int Score { get; private set; } = 0;
     
-    private Stopwatch _timer = new Stopwatch();
+    private readonly Stopwatch _timer = new Stopwatch();
     private const long DropIntervalMs = 1000;
     private readonly SKPaint _cachePaint = new SKPaint { IsAntialias = true };
 

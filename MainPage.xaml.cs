@@ -12,12 +12,13 @@ namespace ColorFallPuzzle;
 public partial class MainPage : ContentPage
 {
     private const string TestBannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
-    private GameManager _gameManager;
+    private readonly GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
     private bool _isTimerRunning = false;
     private bool _adInitialized = false;
     private bool _isPageActive = false;
     private int _lastRenderedScore = -1;
+    private BannerAd? _bannerAd;
 
     public MainPage()
     {
@@ -25,25 +26,25 @@ public partial class MainPage : ContentPage
 
         _gameManager = new GameManager();
 
-        this.Loaded += OnPageLoaded;
-        this.Unloaded += OnPageUnloaded;
-
         var tap = new TapGestureRecognizer();
         tap.Tapped += OnTapped;
         GameCanvas.GestureRecognizers.Add(tap);
     }
 
-    private void OnPageLoaded(object? sender, EventArgs e)
+    protected override void OnAppearing()
     {
+        base.OnAppearing();
         _isPageActive = true;
         InitializeBannerAd();
         StartGameLoop();
     }
 
-    private void OnPageUnloaded(object? sender, EventArgs e)
+    protected override void OnDisappearing()
     {
+        base.OnDisappearing();
         _isPageActive = false;
         _isTimerRunning = false;
+        RemoveBannerAd();
     }
 
     private void StartGameLoop()
@@ -88,6 +89,7 @@ public partial class MainPage : ContentPage
             if (BannerHost != null)
             {
                 BannerHost.Children.Add(banner);
+                _bannerAd = banner;
                 _adInitialized = true;
             }
 #endif
@@ -96,6 +98,16 @@ public partial class MainPage : ContentPage
         {
             Debug.WriteLine($"AdMob Init Error: {ex}");
         }
+    }
+
+    private void RemoveBannerAd()
+    {
+        if (_bannerAd == null)
+            return;
+
+        BannerHost?.Children.Remove(_bannerAd);
+        _bannerAd = null;
+        _adInitialized = false;
     }
 
     private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
@@ -131,6 +143,7 @@ public partial class MainPage : ContentPage
         {
             var pos = e.GetPosition(GameCanvas);
             if (!pos.HasValue) return;
+            if (_canvasWidth <= 0 || _canvasHeight <= 0) return;
 
             double x = pos.Value.X;
             double y = pos.Value.Y;

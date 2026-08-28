@@ -55,6 +55,6 @@ rm -rf obj bin
 
 dotnet workload install maui-android
 dotnet workload restore
- dotnet restore -r android-arm64
- dotnet build -f net9.0-android35.0 -c Release -r android-arm64
- dotnet publish -f net9.0-android35.0 -c Release -r android-arm64 /p:AndroidPackageFormat=apk
+ dotnet restore
+ dotnet build -f net9.0-android -c Release
+ dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk

@@ -34,8 +34,22 @@ public class Grid
     // Renk patlatma (3+ aynı renk yan yana/dikey)
     public int BurstMatches()
     {
+        int totalScore = 0;
+
+        while (TryBurstSinglePass(out var passScore))
+        {
+            totalScore += passScore;
+            DropFloatingBlocks();
+        }
+
+        return totalScore;
+    }
+
+    private bool TryBurstSinglePass(out int score)
+    {
         bool[,] visited = new bool[Width, Height];
-        int score = 0;
+        bool anyBurst = false;
+        score = 0;
 
         for (int y = 0; y < Height; y++)
         {
@@ -46,19 +60,19 @@ public class Grid
                 var color = Cells[x, y]!.Color;
                 var matches = FloodFill(x, y, color, visited);
 
-                if (matches.Count >= 3)
+                if (matches.Count < 3) continue;
+
+                anyBurst = true;
+                foreach (var (mx, my) in matches)
                 {
-                    foreach (var (mx, my) in matches)
-                    {
-                        Cells[mx, my] = null;
-                    }
-                    score += matches.Count * 10;
+                    Cells[mx, my] = null;
                 }
+
+                score += matches.Count * 10;
             }
         }
 
-        DropFloatingBlocks();
-        return score;
+        return anyBurst;
     }
 
     private List<(int x, int y)> FloodFill(int startX, int startY, SKColor color, bool[,] visited)
