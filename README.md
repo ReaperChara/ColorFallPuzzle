@@ -19,6 +19,7 @@ Uygulama içinde banner reklam birimi kimliği doğrudan koddan test ID ile atan
 - The project is now targeted at `.NET 9` for Android.
 - To build a release APK locally, run:
   - `dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk`
+  - If `dl.google.com` is blocked in your environment, disable AdMob packages for local build: `dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk -p:EnableAdMob=false`
 
 ## Restore and recovery
 Use the provided helper script from the repo root to install JDK 21, Android SDK command-line tools, and build the APK:
@@ -34,6 +35,7 @@ If you want to run the commands manually, use this block instead:
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 export JAVA_HOME="$HOME/jdk-21"
+export ENABLE_ADMOB=false
 export PATH="$JAVA_HOME/bin:$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools"
 
 mkdir -p "$ANDROID_SDK_ROOT"
@@ -65,11 +67,11 @@ rm -rf obj bin
 
 dotnet workload install maui-android
 dotnet workload restore
-dotnet restore
+dotnet restore -p:EnableAdMob="$ENABLE_ADMOB"
 
-dotnet build -f net9.0-android -c Release
+dotnet build -f net9.0-android -c Release -p:EnableAdMob="$ENABLE_ADMOB"
 
-dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk
+dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk -p:EnableAdMob="$ENABLE_ADMOB"
 ```
 
 If the build succeeds, the APK will be created under `bin/Release/net9.0-android/publish` or similar.

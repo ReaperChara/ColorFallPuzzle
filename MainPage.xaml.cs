@@ -2,8 +2,10 @@ using Microsoft.Maui.Dispatching;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using SkiaSharp.Views.Maui.Controls;
+#if ANDROID && USE_ADMOB
 using Soenneker.Maui.Admob;
 using Soenneker.Maui.Admob.Enums;
+#endif
 using ColorFallPuzzle.Services;
 using System.Diagnostics;
 
@@ -15,10 +17,14 @@ public partial class MainPage : ContentPage
     private readonly GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
     private bool _isTimerRunning = false;
+#if ANDROID && USE_ADMOB
     private bool _adInitialized = false;
+#endif
     private bool _isPageActive = false;
     private int _lastRenderedScore = -1;
+#if ANDROID && USE_ADMOB
     private BannerAd? _bannerAd;
+#endif
 
     public MainPage()
     {
@@ -35,7 +41,9 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
         _isPageActive = true;
+#if ANDROID && USE_ADMOB
         InitializeBannerAd();
+#endif
         StartGameLoop();
     }
 
@@ -44,7 +52,9 @@ public partial class MainPage : ContentPage
         base.OnDisappearing();
         _isPageActive = false;
         _isTimerRunning = false;
+#if ANDROID && USE_ADMOB
         RemoveBannerAd();
+#endif
     }
 
     private void StartGameLoop()
@@ -71,6 +81,7 @@ public partial class MainPage : ContentPage
         });
     }
 
+#if ANDROID && USE_ADMOB
     private void InitializeBannerAd()
     {
         if (_adInitialized) return;
@@ -109,6 +120,7 @@ public partial class MainPage : ContentPage
         _bannerAd = null;
         _adInitialized = false;
     }
+#endif
 
     private void OnCanvasPaint(object? sender, SKPaintSurfaceEventArgs e)
     {

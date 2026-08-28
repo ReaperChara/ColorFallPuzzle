@@ -4,6 +4,7 @@ set -euo pipefail
 export ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$HOME/Android/Sdk}"
 export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
 export JAVA_HOME="$HOME/jdk-21"
+export ENABLE_ADMOB="${ENABLE_ADMOB:-false}"
 export PATH="$JAVA_HOME/bin:$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools"
 
 mkdir -p "$ANDROID_SDK_ROOT"
@@ -55,6 +56,6 @@ rm -rf obj bin
 
 dotnet workload install maui-android
 dotnet workload restore
- dotnet restore
- dotnet build -f net9.0-android -c Release
- dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk
+dotnet restore -p:EnableAdMob="$ENABLE_ADMOB"
+dotnet build -f net9.0-android -c Release -p:EnableAdMob="$ENABLE_ADMOB"
+dotnet publish -f net9.0-android -c Release /p:AndroidPackageFormat=apk -p:EnableAdMob="$ENABLE_ADMOB"
