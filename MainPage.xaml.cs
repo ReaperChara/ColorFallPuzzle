@@ -11,10 +11,13 @@ namespace ColorFallPuzzle;
 
 public partial class MainPage : ContentPage
 {
+    private const string TestBannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
     private GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
     private bool _isTimerRunning = false;
     private bool _adInitialized = false;
+    private bool _isPageActive = false;
+    private int _lastRenderedScore = -1;
 
     public MainPage()
     {
@@ -23,6 +26,7 @@ public partial class MainPage : ContentPage
         _gameManager = new GameManager();
 
         this.Loaded += OnPageLoaded;
+        this.Unloaded += OnPageUnloaded;
 
         var tap = new TapGestureRecognizer();
         tap.Tapped += OnTapped;
@@ -31,8 +35,15 @@ public partial class MainPage : ContentPage
 
     private void OnPageLoaded(object? sender, EventArgs e)
     {
+        _isPageActive = true;
         InitializeBannerAd();
         StartGameLoop();
+    }
+
+    private void OnPageUnloaded(object? sender, EventArgs e)
+    {
+        _isPageActive = false;
+        _isTimerRunning = false;
     }
 
     private void StartGameLoop()
@@ -46,14 +57,14 @@ public partial class MainPage : ContentPage
             {
                 _gameManager.Update();
 
-                // Direkt UI thread flood yok
                 GameCanvas.InvalidateSurface();
 
-                return true;
+                return _isPageActive;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Game Loop Error: {ex}");
+                _isTimerRunning = false;
                 return false;
             }
         });
@@ -68,6 +79,7 @@ public partial class MainPage : ContentPage
 #if ANDROID
             var banner = new BannerAd
             {
+                AdUnitId = TestBannerAdUnitId,
                 Size = AdmobAdSize.Banner,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End
@@ -101,8 +113,11 @@ public partial class MainPage : ContentPage
 
             _gameManager.Draw(canvas, (int)_canvasWidth, (int)_canvasHeight);
 
-            // UI thread spam yok (kritik fix)
-            ScoreLabel.Text = $"Score: {_gameManager.Score}";
+            if (_lastRenderedScore != _gameManager.Score)
+            {
+                _lastRenderedScore = _gameManager.Score;
+                ScoreLabel.Text = $"Score: {_lastRenderedScore}";
+            }
         }
         catch (Exception ex)
         {
