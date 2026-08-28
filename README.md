@@ -12,6 +12,8 @@ A simple falling block puzzle game for Android, built with .NET MAUI in C#. Feat
 - Interstitial Ad Unit ID: `ca-app-pub-3940256099942544/1033173712`
 - Rewarded Ad Unit ID: `ca-app-pub-3940256099942544/5224354917`
 
+Uygulama içinde banner reklam birimi kimliği doğrudan koddan test ID ile atanır; production'a çıkarken bu kimliği kendi AdMob ID'niz ile değiştirin.
+
 ## How to Build
 - `dotnet build` compiles the project but does not create a distributable APK.
 - The project is now targeted at `.NET 9` for Android.

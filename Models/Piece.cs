@@ -7,6 +7,8 @@ public class Piece
     public List<Block> Blocks { get; private set; } = new();
     public int PivotX { get; private set; }
     public int PivotY { get; private set; }
+    public int Width { get; private set; }
+    public int Height { get; private set; }
 
     private static readonly SKColor[] Colors = new[]
     {
@@ -91,9 +93,61 @@ public class Piece
         }
     };
 
-    public Piece()
+    public Piece() : this(true)
     {
-        GenerateRandomPiece();
+    }
+
+    private Piece(bool generateRandomShape)
+    {
+        if (generateRandomShape)
+        {
+            GenerateRandomPiece();
+        }
+    }
+
+    private void RecalculateBounds()
+    {
+        int minX = int.MaxValue;
+        int minY = int.MaxValue;
+        int maxX = int.MinValue;
+        int maxY = int.MinValue;
+
+        foreach (var b in Blocks)
+        {
+            minX = Math.Min(minX, b.X);
+            minY = Math.Min(minY, b.Y);
+            maxX = Math.Max(maxX, b.X);
+            maxY = Math.Max(maxY, b.Y);
+        }
+
+        if (minX == int.MaxValue)
+        {
+            Width = 0;
+            Height = 0;
+            PivotX = 0;
+            PivotY = 0;
+            return;
+        }
+
+        if (minX != 0 || minY != 0)
+        {
+            for (int i = 0; i < Blocks.Count; i++)
+            {
+                var b = Blocks[i];
+                Blocks[i] = new Block(b.X - minX, b.Y - minY, b.Color);
+            }
+            maxX -= minX;
+            maxY -= minY;
+        }
+
+        Width = maxX + 1;
+        Height = maxY + 1;
+
+        double avgX = Blocks.Average(b => b.X);
+        PivotX = (int)Math.Round(avgX);
+
+        double avgY = Blocks.Average(b => b.Y);
+        PivotY = (int)Math.Round(avgY);
     }
 
     private void GenerateRandomPiece()
@@ -101,8 +155,6 @@ public class Piece
         int index = Rand.Next(Pentominoes.Length);
         var shape = Pentominoes[index];
         Blocks.Clear();
-
-        int minX = int.MaxValue, minY = int.MaxValue;
 
         // Şekli bloklara çevir
         for (int y = 0; y < shape.Length; y++)
@@ -113,25 +165,11 @@ public class Piece
                 {
                     var color = Colors[Rand.Next(Colors.Length)];
                     Blocks.Add(new Block(x, y, color));
-                    minX = Math.Min(minX, x);
-                    minY = Math.Min(minY, y);
                 }
             }
         }
 
-        // Normalize: sola-yukarıya kaydır
-        foreach (var b in Blocks)
-        {
-            b.X -= minX;
-            b.Y -= minY;
-        }
-
-        // Pivot (merkez) belirle – basit Round ile
-        double avgX = Blocks.Average(b => b.X);
-        PivotX = (int)Math.Round(avgX);
-
-        double avgY = Blocks.Average(b => b.Y);
-        PivotY = (int)Math.Round(avgY);
+        RecalculateBounds();
     }
 
     // Parçayı döndür (90 derece saat yönünde)
@@ -146,15 +184,16 @@ public class Piece
             int newY = PivotY - relX;
             Blocks[i] = new Block(newX, newY, b.Color);
         }
+
+        RecalculateBounds();
     }
 
     // Kopya oluştur
     public Piece Clone()
     {
-        var p = new Piece();
+        var p = new Piece(false);
         p.Blocks = Blocks.Select(b => b.Clone()).ToList();
-        p.PivotX = PivotX;
-        p.PivotY = PivotY;
+        p.RecalculateBounds();
         return p;
     }
 }

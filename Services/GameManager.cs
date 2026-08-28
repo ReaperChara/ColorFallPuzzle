@@ -1,7 +1,6 @@
 using ColorFallPuzzle.Models;
 using SkiaSharp;
 using System.Diagnostics;
-using System.Linq;
 
 namespace ColorFallPuzzle.Services;
 
@@ -35,8 +34,7 @@ public class GameManager
     private void SpawnNewPiece()
     {
         CurrentPiece = new Piece();
-        int pieceWidth = CurrentPiece.Blocks.Max(b => b.X) - CurrentPiece.Blocks.Min(b => b.X) + 1;
-        CurrentX = (Models.Grid.Width - pieceWidth) / 2;
+        CurrentX = (Models.Grid.Width - CurrentPiece.Width) / 2;
         CurrentY = 0;
 
         if (!CanMove(0, 0))
