@@ -11,7 +11,6 @@ namespace ColorFallPuzzle;
 
 public partial class MainPage : ContentPage
 {
-    private const string TestBannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
     private GameManager _gameManager;
     private double _canvasWidth, _canvasHeight;
     private bool _isTimerRunning = false;
@@ -79,7 +78,6 @@ public partial class MainPage : ContentPage
 #if ANDROID
             var banner = new BannerAd
             {
-                AdUnitId = TestBannerAdUnitId,
                 Size = AdmobAdSize.Banner,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.End
