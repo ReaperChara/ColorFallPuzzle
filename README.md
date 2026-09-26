@@ -3,22 +3,18 @@
 A simple falling block puzzle game for Android, built with .NET MAUI in C#. Features pentomino shapes with colored blocks; match 3 same colors to burst and score. Includes AdMob test ads.
 
 ## Setup
-- .NET 8+ required for build.
+- .NET 9 SDK is required (the app targets `net9.0-android` and tests target `net9.0`).
 - Use GitHub Actions (build-android.yml) to build APK automatically on push.
 
-## AdMob Test IDs
-- Android App ID: `ca-app-pub-3940256099942544~3347511713`
-- Banner Ad Unit ID: `ca-app-pub-3940256099942544/6300978111`
-- Interstitial Ad Unit ID: `ca-app-pub-3940256099942544/1033173712`
-- Rewarded Ad Unit ID: `ca-app-pub-3940256099942544/5224354917`
-
-Uygulama içinde banner reklam birimi kimliği doğrudan koddan test ID ile atanır; production'a çıkarken bu kimliği kendi AdMob ID'niz ile değiştirin.
+## AdMob
+- The current app code initializes only a `BannerAd` on Android (`MainPage.xaml.cs`).
+- No explicit `AdUnitId` is assigned in code right now; ad unit configuration should be added before production release.
 
 ## How to Build
 - `dotnet build` compiles the project but does not create a distributable APK.
 - The project is now targeted at `.NET 9` for Android.
 - To build a release APK locally, run:
-  - `dotnet publish -f net9.0-android35.0 -c Release /p:AndroidPackageFormat=apk`
+  - `dotnet publish -f net9.0-android -c Release -p:AndroidPackageFormat=apk`
 
 ## Restore and recovery
 Use the provided helper script from the repo root to install JDK 21, Android SDK command-line tools, and build the APK:
@@ -67,12 +63,15 @@ dotnet workload install maui-android
 dotnet workload restore
 dotnet restore
 
-dotnet build -f net9.0-android35.0 -c Release
+dotnet build -f net9.0-android -c Release
 
-dotnet publish -f net9.0-android35.0 -c Release /p:AndroidPackageFormat=apk
+dotnet publish -f net9.0-android -c Release -p:AndroidPackageFormat=apk
 ```
 
-If the build succeeds, the APK will be created under `bin/Release/net9.0-android35.0/android-arm64/publish` or similar.
+If the build succeeds, the APK will be created under `bin/Release/net9.0-android/publish` or similar.
+
+## Run tests
+- `dotnet test /home/runner/work/ColorFallPuzzle/ColorFallPuzzle/ColorFallPuzzle.Tests/ColorFallPuzzle.Tests.csproj`
 
 1. Push changes.
 2. Go to Actions tab, download APK from artifacts.
