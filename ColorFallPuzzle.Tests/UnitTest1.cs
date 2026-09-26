@@ -24,6 +24,21 @@ public class GridTests
     }
 
     [Fact]
+    public void AddPiece_WhenAnyBlockIsOutOfBounds_DoesNotWriteAnyCells()
+    {
+        var grid = new Grid();
+        var piece = new Piece();
+        piece.Blocks.Clear();
+        piece.Blocks.Add(new Block(0, 0, SKColors.Red));
+        piece.Blocks.Add(new Block(1, 0, SKColors.Green));
+
+        var added = grid.AddPiece(piece, Grid.Width - 1, 0);
+
+        Assert.False(added);
+        Assert.Null(grid.Cells[Grid.Width - 1, 0]);
+    }
+
+    [Fact]
     public void BurstMatches_RemovesOnlyMatchedGroup_AndDropsFloatingBlocks()
     {
         var grid = new Grid();
